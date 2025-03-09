@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use App\Jobs\SendVerificationEmail;
 use App\Mail\MailVerification;
 use App\Models\User;
@@ -26,7 +27,6 @@ class AuthController extends Controller
         SendVerificationEmail::dispatch($user);
         return response()->json([
             'message' => 'User created successfully',
-            'user' => $user
         ], 201);
     }
 
@@ -60,5 +60,12 @@ class AuthController extends Controller
             'token' => $auth_token,
             'message' => 'Logged in successfully',
         ], 200);
+    }
+
+    public function me(Request $request)
+    {
+        return response()->json([
+            'data' => new UserResource($request->user()),
+        ], 201);
     }
 }
