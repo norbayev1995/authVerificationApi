@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendVerificationEmail;
 use App\Mail\MailVerification;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -22,7 +23,7 @@ class AuthController extends Controller
             $user->avatar = $this->uploadPhoto($request->file('avatar'), 'avatars');
         }
         $user->save();
-        $mail = Mail::to($user->email)->send(new MailVerification($user));
+        SendVerificationEmail::dispatch($user);
         return response()->json([
             'message' => 'User created successfully',
             'user' => $user
