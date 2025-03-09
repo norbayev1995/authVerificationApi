@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -16,7 +17,7 @@ class MailVerification extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(protected User $user)
     {
         //
     }
@@ -36,8 +37,13 @@ class MailVerification extends Mailable
      */
     public function content(): Content
     {
+        $verificationLink = 'http://127.0.0.1:8000/api/verify?token='.$this->user->verification_token;
         return new Content(
-            view: 'view.name',
+            view: 'emails.verify',
+            with: [
+                'link' => $verificationLink,
+                'user' => $this->user,
+            ]
         );
     }
 
