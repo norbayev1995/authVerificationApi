@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Jobs\SendVerificationEmail;
 use App\Mail\MailVerification;
@@ -13,7 +15,7 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
         $user = new User;
         $user->name = $request->name;
@@ -42,7 +44,7 @@ class AuthController extends Controller
         ], 200);
     }
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
         $user = User::where('email', $request->email)->first();
         if (!$user || !Hash::check($request->password, $user->password)) {
