@@ -10,3 +10,4 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/verify', [AuthController::class, 'verify']);
+Route::post('/login', [AuthController::class, 'login']);
